@@ -82,6 +82,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        
 'pgsql' => [
     'driver' => 'pgsql',
     'host' => env('DB_HOST'),
@@ -92,8 +93,10 @@ return [
     'charset' => 'utf8',
     'prefix' => '',
     'schema' => 'public',
-    'sslmode' => env('DB_SSLMODE', 'require'),
-    'options' => [],
+    'sslmode' => 'require',
+    'options' => env('DB_OPTIONS')
+        ? [PDO::PGSQL_ATTR_OPTIONS => env('DB_OPTIONS')]
+        : [],
 ],
 
 

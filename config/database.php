@@ -93,12 +93,9 @@ return [
     'prefix' => '',
     'schema' => 'public',
     'sslmode' => env('DB_SSLMODE', 'require'),
-    'options' => [
-        PDO::PGSQL_ATTR_SSL_MODE => PDO::PGSQL_SSL_MODE_REQUIRE,
-        PDO::PGSQL_ATTR_INIT_COMMAND =>
-            'SET options=endpoint=' . env('NEON_ENDPOINT'),
-    ],
+    'options' => [],
 ],
+
 
 
         'sqlsrv' => [

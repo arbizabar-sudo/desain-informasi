@@ -12,10 +12,12 @@ COPY . .
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:clear \
-    && php artisan route:clear \
-    && php artisan view:clear \
- 
+RUN php artisan key:generate || true \
+ && php artisan config:clear \
+ && php artisan route:clear \
+ && php artisan view:clear \
+ && php artisan config:cache
+
 EXPOSE 8080
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]

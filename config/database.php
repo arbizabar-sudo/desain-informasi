@@ -92,16 +92,13 @@ return [
     'charset' => 'utf8',
     'prefix' => '',
     'schema' => 'public',
-
-    // ini native Laravel
     'sslmode' => env('DB_SSLMODE', 'require'),
-
-    // 🔥 INI KUNCI: options STRING, BUKAN konstanta PDO
-    'options' => env('DB_PG_OPTIONS')
-        ? ['options' => env('DB_PG_OPTIONS')]
-        : [],
+    'options' => [
+        PDO::PGSQL_ATTR_SSL_MODE => PDO::PGSQL_SSL_MODE_REQUIRE,
+        PDO::PGSQL_ATTR_INIT_COMMAND =>
+            'SET options=endpoint=' . env('NEON_ENDPOINT'),
+    ],
 ],
-
 
 
         'sqlsrv' => [

@@ -93,9 +93,10 @@ return [
     'prefix' => '',
     'schema' => 'public',
     'sslmode' => env('DB_SSLMODE', 'require'),
+
     'options' => extension_loaded('pdo_pgsql') ? [
-        PDO::PGSQL_ATTR_SSL_MODE => PDO::PGSQL_SSL_MODE_REQUIRE,
-        PDO::PGSQL_ATTR_INIT_COMMAND => "SET options='endpoint=ep-ancient-silence-ahfyzoyn'",
+        PDO::ATTR_TIMEOUT => 5,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ] : [],
 ],
 

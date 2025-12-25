@@ -93,9 +93,17 @@ return [
     'charset' => 'utf8',
     'prefix' => '',
     'prefix_indexes' => true,
-    'schema' => 'public',
-    'sslmode' => env('DB_SSLMODE', 'require'),
-    'options' => env('DB_OPTIONS') ? ['options' => env('DB_OPTIONS')] : [],
+    'search_path' => 'public',
+    'sslmode' => 'require',
+
+    'options' => [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::PGSQL_ATTR_DISABLE_PREPARES => true,
+        PDO::ATTR_TIMEOUT => 5,
+
+        // ⬇⬇⬇ INI KUNCI NEON ⬇⬇⬇
+        PDO::PGSQL_ATTR_OPTIONS => 'endpoint=ep-ancient-silence-ahfyzoyn',
+    ],
 ],
 
 

@@ -1,10 +1,8 @@
 FROM php:8.2-cli-bookworm
 
 RUN apt-get update && apt-get install -y \
-    unzip \
     libpq-dev \
-    ca-certificates \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo_pgsql
 
 WORKDIR /app
 COPY . .

@@ -17,10 +17,6 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/community', function () {
-    return view('community');
-});
-
 Route::get('/ilustrasi', function () {
     return view('ilustrasi');
 });

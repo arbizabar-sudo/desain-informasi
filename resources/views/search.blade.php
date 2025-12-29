@@ -47,8 +47,8 @@
             height:86px;
             border-radius:12px;
             overflow:hidden;
-            background:#f0f0f0;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            background: #ffffffff;
+            box-shadow: 
             flex-shrink:0;
             display:flex;
             align-items:center;
@@ -281,10 +281,53 @@
                   @endif
               </p>
             </div>
+            @php
+              use \Illuminate\Support\Str;
+
+              // Default placeholder
+              $categoryAsset = '/images/categories/placeholder.svg';
+
+              // Support when $category is either a slug string or a Category model
+              $slug = '';
+              $name = '';
+              if (!empty($category)) {
+                if (is_string($category)) {
+                  $slug = $category;
+                } elseif (is_object($category)) {
+                  $slug = (string)($category->slug ?? '');
+                  $name = (string)($category->name ?? '');
+                }
+              }
+
+              // Also consider page title (e.g., "Illustration") when slug/name absent
+              $source = Str::lower($slug ?: $name ?: ($pageTitle ?? ''));
+
+              // Explicit mappings for well-known categories
+              if (Str::contains($source, ['ui-ux', 'uiux', 'ui'])) {
+                $categoryAsset = '/images/UI.png';
+              } elseif (Str::contains($source, ['ilustr', 'illustr', 'ilustrasi', 'illustration'])) {
+                $categoryAsset = '/images/ILUSTRASI.png';
+              } else {
+                // Prefer category-specific files in public/images/categories/{slug-or-name}.png|svg
+                $candidate = Str::slug($slug ?: $name ?: ($pageTitle ?? ''));
+                if ($candidate) {
+                  $png = 'images/categories/' . $candidate . '.png';
+                  $svg = 'images/categories/' . $candidate . '.svg';
+                  if (file_exists(public_path($png))) {
+                    $categoryAsset = '/' . $png;
+                  } elseif (file_exists(public_path($svg))) {
+                    $categoryAsset = '/' . $svg;
+                  } else {
+                    $categoryAsset = '/images/categories/placeholder.svg';
+                  }
+                }
+              }
+            @endphp
+
             <div class="sr-right">
               <!-- Developer-replaceable category asset (change src or data-asset) -->
-              <div id="categoryAsset" class="category-asset" data-asset="/images/placeholder-asset.jpg">
-                <img src="/images/placeholder-asset.jpg" alt="Category asset">
+              <div id="categoryAsset" class="category-asset" data-asset="{{ $categoryAsset }}">
+                <img src="{{ $categoryAsset }}" alt="{{ $category->name ?? 'Category asset' }}">
               </div>
             </div>
         </div>
